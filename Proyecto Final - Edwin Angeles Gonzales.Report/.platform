@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Proyecto Final - Edwin Angeles Gonzales"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "e4bb8d6d-2b62-40f8-8927-31086fba107a"
+  }
+}

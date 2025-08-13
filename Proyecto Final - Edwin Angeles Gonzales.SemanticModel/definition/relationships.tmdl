@@ -1,0 +1,76 @@
+relationship 396d8237-2654-498d-9d18-5b7634238307
+	joinOnDateBehavior: datePartOnly
+	fromColumn: BIENES_PATRIMONIALES.FECHA_COMPRA
+	toColumn: LocalDateTable_9cacdd7c-9ea7-48f2-9dca-cb1e2a7ba07a.Date
+
+relationship 02375834-829a-4f95-a57f-cef18203a83a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: BIENES_PATRIMONIALES.FECHA_ALTA
+	toColumn: LocalDateTable_3744db35-abc4-43fe-935b-af248e554eb1.Date
+
+relationship 030ebcb4-27c4-4cc7-8fdd-6e51b031dc4d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: CONTABILIDAD_BIEN.FECHA_MOV
+	toColumn: LocalDateTable_02cffd37-6954-4542-87dd-0059935b1f36.Date
+
+relationship 4a7e5b5c-4f47-4271-8938-6fa4c7b3af6b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: CONTABILIDAD_BIEN.FECHA_CORTE
+	toColumn: LocalDateTable_6d39387e-31f5-4bb0-9a1f-3aed7567a8c0.Date
+
+relationship AutoDetected_353b877d-fa2e-4f87-9b4f-913ef66a0685
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: UBICACION_GEOGRAFICA.COD_DISTRITO
+	toColumn: DISTRITO.COD_DISTRITO
+
+relationship 446b2914-1d00-c6b4-10ac-c82e52b4eebe
+	fromColumn: BIENES_PATRIMONIALES.AREA_CENSO
+	toColumn: AREA_CENSAL.AREA_CENSO
+
+relationship 730511e0-11c0-e95f-792d-0fd86f708bfb
+	fromColumn: BIENES_PATRIMONIALES.GES_DEP
+	toColumn: DEPENDENCIA_GESTORA.GES_DEP
+
+relationship e7cab1d7-e138-7ea3-24f1-213a57123628
+	fromColumn: BIENES_PATRIMONIALES.GESTION
+	toColumn: MODELO_GESTION.GESTION
+
+relationship 413bcce7-7bba-8087-23b9-f1d86be075be
+	fromColumn: BIENES_PATRIMONIALES.NLV_MODULAR
+	toColumn: NIVEL_EDUCATIVO.NLV_MODULAR
+
+relationship 7396ccd8-06ae-ba8e-6038-80faa9dccecf
+	fromColumn: NIVEL_EDUCATIVO.COD_FORMA
+	toColumn: FORMATO_EDUCATIVO.COD_FORMA
+
+relationship 76556599-bd62-21ec-65ea-1026aa6594ee
+	fromColumn: CENTRO_EDUCATIVO.UBIGEO
+	toColumn: UBICACION_GEOGRAFICA.UBIGEO
+
+relationship 5f19d52d-b2f5-bf49-24ff-b066ca863b02
+	fromColumn: BIENES_PATRIMONIALES.COD_LOCAL
+	toColumn: CENTRO_EDUCATIVO.COD_LOCAL
+
+relationship 160a8c15-b58e-65a9-5ff2-d865ae5050c5
+	fromColumn: BIENES_PATRIMONIALES.COD_ESTADO
+	toColumn: ESTADO.COD_ESTADO
+
+relationship c53f358b-21b7-e150-1ab7-cef8e2237d92
+	fromColumn: BIENES_PATRIMONIALES.TIPO_SEXO
+	toColumn: MODALIDAD_EDUCATIVA.TIPO_SEXO
+
+relationship d3458bbb-7621-67b3-b0c0-7972ec9569dd
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: BIENES_PATRIMONIALES.CTA_PRINCIPAL
+	toColumn: CONTABILIDAD_BIEN.CTA_PRINCIPAL
+
+relationship b3af4464-472a-adf3-f0aa-a70a8a3d68bb
+	fromColumn: UBICACION_GEOGRAFICA.COD_PROV
+	toColumn: PROVINCIA.COD_PROV
+
+relationship 02606ae2-4011-5a1b-d5d3-94992ae13f65
+	fromColumn: UBICACION_GEOGRAFICA.COD_DEPA
+	toColumn: DEPARTAMENTO.COD_DEPA
+

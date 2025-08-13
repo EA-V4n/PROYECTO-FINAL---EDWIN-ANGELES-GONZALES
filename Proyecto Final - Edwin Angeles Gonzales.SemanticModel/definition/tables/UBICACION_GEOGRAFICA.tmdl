@@ -1,0 +1,83 @@
+table UBICACION_GEOGRAFICA
+	lineageTag: 33688ecc-c6cb-4453-85b6-c7ea35854b71
+
+	column UBIGEO
+		dataType: string
+		lineageTag: 5320283e-272e-4208-8ae5-837acfa5ede9
+		summarizeBy: none
+		sourceColumn: UBIGEO
+
+		annotation SummarizationSetBy = Automatic
+
+	column COD_PROV
+		dataType: string
+		lineageTag: b371691c-0dfa-4193-a9d2-1849d60561ce
+		summarizeBy: none
+		sourceColumn: COD_PROV
+
+		annotation SummarizationSetBy = Automatic
+
+	column LATITUD
+		dataType: double
+		lineageTag: 07490d03-43bc-41fe-a163-cb0d38ce79ed
+		summarizeBy: sum
+		sourceColumn: LATITUD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LONGITUD
+		dataType: double
+		lineageTag: 24427209-0940-4482-b0c8-a15c380437f1
+		summarizeBy: sum
+		sourceColumn: LONGITUD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COD_DEPA
+		dataType: string
+		lineageTag: 211ddbf1-bbc4-4a6d-a630-66a281259d08
+		summarizeBy: none
+		sourceColumn: COD_DEPA
+
+		annotation SummarizationSetBy = Automatic
+
+	column COD_DISTRITO
+		dataType: string
+		lineageTag: f7e13042-e954-4a1c-a5fb-a6c2734f278e
+		summarizeBy: none
+		sourceColumn: COD_DISTRITO
+
+		annotation SummarizationSetBy = Automatic
+
+	partition UBICACION_GEOGRAFICA = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos1" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Otras columnas quitadas1" = Table.SelectColumns(#"Encabezados promovidos1",{"UBIGEO", "COD_PROV", "COD_DISTRITO", "DISTRITO", "LATITUD", "LONGITUD"}),
+				    #"Personalizada agregada" = Table.AddColumn(#"Otras columnas quitadas1", "COD_DEPA", each "01"),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Personalizada agregada",{{"COD_DEPA", type text}}),
+				    #"Columnas reordenadas" = Table.ReorderColumns(#"Tipo cambiado",{"UBIGEO", "COD_DEPA", "COD_PROV", "COD_DISTRITO", "LATITUD", "LONGITUD"}),
+				    #"Filas ordenadas1" = Table.Sort(#"Columnas reordenadas",{{"DISTRITO", Order.Ascending}}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Filas ordenadas1",{"COD_DISTRITO"}),
+				    #"Duplicados quitados" = Table.Distinct(#"Columnas quitadas", {"UBIGEO"}),
+				    #"Duplicados quitados1" = Table.Distinct(#"Duplicados quitados", {"DISTRITO"}),
+				    #"Índice agregado" = Table.AddIndexColumn(#"Duplicados quitados1", "Índice", 1, 1, Int64.Type),
+				    #"Columnas reordenadas1" = Table.ReorderColumns(#"Índice agregado",{"UBIGEO", "COD_DEPA", "COD_PROV", "DISTRITO", "Índice", "LATITUD", "LONGITUD"}),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Columnas reordenadas1",{{"Índice", "COD_DISTRITO"}}),
+				    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Columnas con nombre cambiado",{{"COD_DISTRITO", type text}}),
+				    #"Filas ordenadas" = Table.Sort(#"Tipo cambiado1",{{"UBIGEO", Order.Ascending}}),
+				    #"Columnas quitadas1" = Table.RemoveColumns(#"Filas ordenadas",{"DISTRITO"}),
+				    #"Tipo cambiado2" = Table.TransformColumnTypes(#"Columnas quitadas1",{{"LATITUD", type number}, {"LONGITUD", type number}})
+				in
+				    #"Tipo cambiado2"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

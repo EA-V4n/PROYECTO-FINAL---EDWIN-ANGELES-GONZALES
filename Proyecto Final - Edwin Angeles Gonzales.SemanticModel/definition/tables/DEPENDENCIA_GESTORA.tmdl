@@ -1,0 +1,38 @@
+table DEPENDENCIA_GESTORA
+	lineageTag: 4ce8ca72-5e59-4958-83e0-793140387b12
+
+	column GES_DEP
+		dataType: string
+		lineageTag: be47aab9-e4b1-4755-bac6-78566eeeabb2
+		summarizeBy: none
+		sourceColumn: GES_DEP
+
+		annotation SummarizationSetBy = Automatic
+
+	column D_GES_DEP
+		dataType: string
+		lineageTag: a4e4aa71-7de1-42e6-81ca-1cca40636aa4
+		summarizeBy: none
+		sourceColumn: D_GES_DEP
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DEPENDENCIA_GESTORA = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"COD_PATRIMONIAL", Int64.Type}, {"DESCRIPCION", type text}, {"FECHA_COMPRA", Int64.Type}, {"NOMBRE", type text}, {"CTA_PRINCIPAL", Int64.Type}, {"SUB_CTA", Int64.Type}, {"TIPO_MOV", type text}, {"TIPO_TRAN", Int64.Type}, {"NOMBRE_DEP", type text}, {"NOMBRE_SEDE", type text}, {"COD_MODULAR", Int64.Type}, {"TIPO_DOC_REFER", Int64.Type}, {"FECHA_MOV", Int64.Type}, {"FECHA_ALTA", Int64.Type}, {"HVALOR_INICIAL", type number}, {"HDEPR_INICIAL", type number}, {"HDEPR_EJERCICIO", type number}, {"VALOR_NETO", type number}, {"ESTADO_CONSER", type text}, {"SEC_EJEC", Int64.Type}, {"COD_LOCAL", Int64.Type}, {"NLV_MODULAR", type text}, {"D_NLV_MODULAR", type text}, {"D_FORMA", type text}, {"TIPO_SEXO", Int64.Type}, {"D_TIPO_SEXO", type text}, {"GESTION", Int64.Type}, {"D_GESTION", type text}, {"GES_DEP", type text}, {"D_GES_DEP", type text}, {"DIR_CENTRO", type text}, {"AREA_CENSO", Int64.Type}, {"D_AREACENSO", type text}, {"UBIGEO", Int64.Type}, {"DEPARTAMENTO", type text}, {"COD_PROV", Int64.Type}, {"PROVINCIA", type text}, {"COD_DISTRITO", Int64.Type}, {"DISTRITO", type text}, {"COD_ESTADO", Int64.Type}, {"D_ESTADO", type text}, {"LATITUD", type number}, {"LONGITUD", type number}, {"FECHA_CORTE", Int64.Type}}),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Tipo cambiado",{"GES_DEP", "D_GES_DEP", "SEC_EJEC"}),
+				    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Otras columnas quitadas",{{"SEC_EJEC", type text}}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Tipo cambiado1",{"SEC_EJEC"}),
+				    #"Duplicados quitados" = Table.Distinct(#"Columnas quitadas", {"GES_DEP"}),
+				    #"Filas ordenadas" = Table.Sort(#"Duplicados quitados",{{"GES_DEP", Order.Ascending}})
+				in
+				    #"Filas ordenadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

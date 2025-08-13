@@ -1,0 +1,37 @@
+table DEPARTAMENTO
+	lineageTag: df9d331c-f7d6-483a-bdad-aa3e55f70006
+
+	column DEPARTAMENTO
+		dataType: string
+		lineageTag: 6f72e2ef-80dd-4b8e-a345-9a8133338b90
+		summarizeBy: none
+		sourceColumn: DEPARTAMENTO
+
+		annotation SummarizationSetBy = Automatic
+
+	column COD_DEPA
+		dataType: string
+		lineageTag: 812e7c27-9d4d-42ea-bada-8abcbca54db6
+		summarizeBy: none
+		sourceColumn: COD_DEPA
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DEPARTAMENTO = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos1" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Encabezados promovidos1",{"DEPARTAMENTO"}),
+				    #"Columna condicional agregada" = Table.AddColumn(#"Otras columnas quitadas", "COD_DEPA", each if Text.Contains([DEPARTAMENTO], "SAN MARTIN") then 1 else null),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Columna condicional agregada",{{"COD_DEPA", type text}}),
+				    #"Columnas reordenadas" = Table.ReorderColumns(#"Tipo cambiado",{"COD_DEPA", "DEPARTAMENTO"}),
+				    #"Duplicados quitados" = Table.Distinct(#"Columnas reordenadas", {"COD_DEPA"})
+				in
+				    #"Duplicados quitados"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

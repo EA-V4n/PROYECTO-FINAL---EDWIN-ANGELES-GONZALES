@@ -1,0 +1,39 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-PE
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["inventario","AREA_CENSAL","DEPENDENCIA_GESTORA","MODELO_GESTION","NIVEL_EDUCATIVO","DISTRITO","PROVINCIA","DEPARTAMENTO","UBICACION_GEOGRAFICA","CENTRO_EDUCATIVO","CONTABILIDAD_BIEN","ESTADO","BIENES_PATRIMONIALES","FORMATO_EDUCATIVO","MODALIDAD_EDUCATIVA","MEDIDAS"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.145.1602.0 (25.07)+10647c9fa319b5e39936cdb21328038c371d1fe4
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode"]
+
+ref table AREA_CENSAL
+ref table DEPENDENCIA_GESTORA
+ref table MODELO_GESTION
+ref table NIVEL_EDUCATIVO
+ref table DISTRITO
+ref table PROVINCIA
+ref table DEPARTAMENTO
+ref table UBICACION_GEOGRAFICA
+ref table CENTRO_EDUCATIVO
+ref table CONTABILIDAD_BIEN
+ref table ESTADO
+ref table BIENES_PATRIMONIALES
+ref table FORMATO_EDUCATIVO
+ref table MODALIDAD_EDUCATIVA
+ref table DateTableTemplate_90de9424-228d-43c8-84d3-4eb420cde43c
+ref table LocalDateTable_9cacdd7c-9ea7-48f2-9dca-cb1e2a7ba07a
+ref table LocalDateTable_3744db35-abc4-43fe-935b-af248e554eb1
+ref table LocalDateTable_02cffd37-6954-4542-87dd-0059935b1f36
+ref table LocalDateTable_6d39387e-31f5-4bb0-9a1f-3aed7567a8c0
+ref table MEDIDAS
+
+ref cultureInfo es-ES
+

@@ -1,0 +1,34 @@
+table ESTADO
+	lineageTag: f5775bc9-2b78-4bd8-8455-ec1e2a929a69
+
+	column COD_ESTADO
+		dataType: string
+		lineageTag: 376ec04b-29de-480b-9547-8d3fdfccc4a3
+		summarizeBy: none
+		sourceColumn: COD_ESTADO
+
+		annotation SummarizationSetBy = Automatic
+
+	column D_ESTADO
+		dataType: string
+		lineageTag: 81909fdc-bec0-4250-bb13-a4263c01481a
+		summarizeBy: none
+		sourceColumn: D_ESTADO
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ESTADO = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos1" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Encabezados promovidos1",{"COD_ESTADO", "D_ESTADO"}),
+				    #"Duplicados quitados" = Table.Distinct(#"Otras columnas quitadas", {"COD_ESTADO"})
+				in
+				    #"Duplicados quitados"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

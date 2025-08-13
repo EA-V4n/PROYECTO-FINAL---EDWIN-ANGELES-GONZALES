@@ -1,0 +1,108 @@
+table CONTABILIDAD_BIEN
+	lineageTag: b1800486-f0cf-4e7d-bc24-b4ba97e9c50a
+
+	column CTA_PRINCIPAL
+		dataType: string
+		lineageTag: f1077f10-4064-4063-ab4f-3cdb0da5fe55
+		summarizeBy: none
+		sourceColumn: CTA_PRINCIPAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column SUB_CTA
+		dataType: string
+		lineageTag: d42c6610-ffec-4d79-89fe-1c7f5fc8ce91
+		summarizeBy: none
+		sourceColumn: SUB_CTA
+
+		annotation SummarizationSetBy = Automatic
+
+	column TIPO_MOV
+		dataType: string
+		lineageTag: 9353de09-4411-4ab4-b8ad-b162aa5d178f
+		summarizeBy: none
+		sourceColumn: TIPO_MOV
+
+		annotation SummarizationSetBy = Automatic
+
+	column TIPO_TRAN
+		dataType: string
+		lineageTag: 25a0d48d-233c-40e0-82a3-c09d73c96918
+		summarizeBy: none
+		sourceColumn: TIPO_TRAN
+
+		annotation SummarizationSetBy = Automatic
+
+	column HDEPR_INICIAL
+		dataType: decimal
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		lineageTag: 09c8d3ef-c956-4272-be0b-d240930c7e90
+		summarizeBy: sum
+		sourceColumn: HDEPR_INICIAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	column HDEPR_EJERCICIO
+		dataType: decimal
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		lineageTag: b8aabf3e-6b56-4879-89af-eacde88847dd
+		summarizeBy: sum
+		sourceColumn: HDEPR_EJERCICIO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	column FECHA_MOV
+		dataType: dateTime
+		formatString: d/mm/yyyy
+		lineageTag: 0984271e-c9d5-4785-b49e-148f94cc212c
+		summarizeBy: none
+		sourceColumn: FECHA_MOV
+
+		variation Variación
+			isDefault
+			relationship: 030ebcb4-27c4-4cc7-8fdd-6e51b031dc4d
+			defaultHierarchy: LocalDateTable_02cffd37-6954-4542-87dd-0059935b1f36.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column FECHA_CORTE
+		dataType: dateTime
+		formatString: d/mm/yyyy
+		lineageTag: b09ee16d-48f8-45cf-9c63-77265d4f761a
+		summarizeBy: none
+		sourceColumn: FECHA_CORTE
+
+		variation Variación
+			isDefault
+			relationship: 4a7e5b5c-4f47-4271-8938-6fa4c7b3af6b
+			defaultHierarchy: LocalDateTable_6d39387e-31f5-4bb0-9a1f-3aed7567a8c0.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	partition CONTABILIDAD_BIEN = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos1" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Encabezados promovidos1",{"CTA_PRINCIPAL", "SUB_CTA", "TIPO_MOV", "TIPO_TRAN", "HDEPR_INICIAL", "HDEPR_EJERCICIO", "FECHA_MOV", "FECHA_CORTE"}),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Otras columnas quitadas",{{"HDEPR_INICIAL", Currency.Type}, {"HDEPR_EJERCICIO", Currency.Type}, {"FECHA_MOV", type date}, {"FECHA_CORTE", type date}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

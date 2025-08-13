@@ -1,0 +1,60 @@
+table CENTRO_EDUCATIVO
+	lineageTag: 6482782d-b260-46fc-a543-11d9623a7d09
+
+	column COD_LOCAL
+		dataType: string
+		lineageTag: 92323cd8-0b6a-4eee-88c3-287942b813a2
+		summarizeBy: none
+		sourceColumn: COD_LOCAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column UBIGEO
+		dataType: string
+		lineageTag: 57396b69-5b3b-4c9d-9b76-385ea1e2ad3c
+		summarizeBy: none
+		sourceColumn: UBIGEO
+
+		annotation SummarizationSetBy = Automatic
+
+	column NOMBRE_CENTRO
+		dataType: string
+		lineageTag: 705a62be-c07a-4902-9adf-0455d752a9d6
+		summarizeBy: none
+		sourceColumn: NOMBRE_CENTRO
+
+		annotation SummarizationSetBy = Automatic
+
+	column COD_MODULAR
+		dataType: string
+		lineageTag: 72b2929a-b2c4-435f-ade6-12dac1a099d4
+		summarizeBy: none
+		sourceColumn: COD_MODULAR
+
+		annotation SummarizationSetBy = Automatic
+
+	column DIR_CENTRO
+		dataType: string
+		lineageTag: 86e71124-79ad-43f8-99a2-a1e1f21a12e1
+		summarizeBy: none
+		sourceColumn: DIR_CENTRO
+
+		annotation SummarizationSetBy = Automatic
+
+	partition CENTRO_EDUCATIVO = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos1" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Encabezados promovidos1",{"COD_LOCAL", "UBIGEO", "NOMBRE_DEP", "NOMBRE_SEDE", "COD_MODULAR", "DIR_CENTRO"}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Otras columnas quitadas",{"NOMBRE_SEDE"}),
+				    #"Duplicados quitados" = Table.Distinct(#"Columnas quitadas", {"COD_LOCAL"}),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Duplicados quitados",{{"NOMBRE_DEP", "NOMBRE_CENTRO"}})
+				in
+				    #"Columnas con nombre cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

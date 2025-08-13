@@ -1,0 +1,37 @@
+table AREA_CENSAL
+	lineageTag: 97ef7458-7e10-4c06-8999-5ee099911c31
+
+	column AREA_CENSO
+		dataType: string
+		lineageTag: 85dcd50f-8c7e-4d4f-b6a1-3946ef7bf373
+		summarizeBy: none
+		sourceColumn: AREA_CENSO
+
+		annotation SummarizationSetBy = Automatic
+
+	column D_AREACENSO
+		dataType: string
+		lineageTag: 426b430c-0a35-45e0-8ede-fb50b44c76dc
+		summarizeBy: none
+		sourceColumn: D_AREACENSO
+
+		annotation SummarizationSetBy = Automatic
+
+	partition AREA_CENSAL = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"COD_PATRIMONIAL", Int64.Type}, {"DESCRIPCION", type text}, {"FECHA_COMPRA", Int64.Type}, {"NOMBRE", type text}, {"CTA_PRINCIPAL", Int64.Type}, {"SUB_CTA", Int64.Type}, {"TIPO_MOV", type text}, {"TIPO_TRAN", Int64.Type}, {"NOMBRE_DEP", type text}, {"NOMBRE_SEDE", type text}, {"COD_MODULAR", Int64.Type}, {"TIPO_DOC_REFER", Int64.Type}, {"FECHA_MOV", Int64.Type}, {"FECHA_ALTA", Int64.Type}, {"HVALOR_INICIAL", type number}, {"HDEPR_INICIAL", type number}, {"HDEPR_EJERCICIO", type number}, {"VALOR_NETO", type number}, {"ESTADO_CONSER", type text}, {"SEC_EJEC", Int64.Type}, {"COD_LOCAL", Int64.Type}, {"NLV_MODULAR", type text}, {"D_NLV_MODULAR", type text}, {"D_FORMA", type text}, {"TIPO_SEXO", Int64.Type}, {"D_TIPO_SEXO", type text}, {"GESTION", Int64.Type}, {"D_GESTION", type text}, {"GES_DEP", type text}, {"D_GES_DEP", type text}, {"DIR_CENTRO", type text}, {"AREA_CENSO", Int64.Type}, {"D_AREACENSO", type text}, {"UBIGEO", Int64.Type}, {"DEPARTAMENTO", type text}, {"COD_PROV", Int64.Type}, {"PROVINCIA", type text}, {"COD_DISTRITO", Int64.Type}, {"DISTRITO", type text}, {"COD_ESTADO", Int64.Type}, {"D_ESTADO", type text}, {"LATITUD", type number}, {"LONGITUD", type number}, {"FECHA_CORTE", Int64.Type}}),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Tipo cambiado",{"AREA_CENSO", "D_AREACENSO"}),
+				    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Otras columnas quitadas",{{"AREA_CENSO", type text}}),
+				    #"Duplicados quitados" = Table.Distinct(#"Tipo cambiado1", {"AREA_CENSO"}),
+				    #"Filas ordenadas" = Table.Sort(#"Duplicados quitados",{{"AREA_CENSO", Order.Ascending}})
+				in
+				    #"Filas ordenadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

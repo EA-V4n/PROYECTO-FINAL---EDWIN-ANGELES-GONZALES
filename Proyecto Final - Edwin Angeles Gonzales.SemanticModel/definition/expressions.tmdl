@@ -1,0 +1,13 @@
+expression inventario =
+		let
+		    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Encabezados promovidos1" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+		    #"Filas filtradas" = Table.SelectRows(#"Encabezados promovidos1", each true)
+		in
+		    #"Filas filtradas"
+	lineageTag: 89d92c8b-b09a-47dc-abec-9a9be4678dff
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

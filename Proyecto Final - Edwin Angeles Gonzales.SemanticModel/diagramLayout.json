@@ -1,0 +1,217 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "AREA_CENSAL",
+          "nodeLineageTag": "97ef7458-7e10-4c06-8999-5ee099911c31",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 240
+          },
+          "nodeIndex": "DEPENDENCIA_GESTORA",
+          "nodeLineageTag": "4ce8ca72-5e59-4958-83e0-793140387b12",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 1396,
+            "y": 170
+          },
+          "nodeIndex": "DISTRITO",
+          "nodeLineageTag": "76ab8aa1-67be-4139-a214-5a14d866a3d3",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 310,
+            "y": 580
+          },
+          "nodeIndex": "MODALIDAD_EDUCATIVA",
+          "nodeLineageTag": "65e5520a-6e41-46eb-875f-bf48b4142ca6",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 418,
+            "y": 0
+          },
+          "nodeIndex": "MODELO_GESTION",
+          "nodeLineageTag": "9b2ba8e2-03a7-4fbb-b015-45bd803295d0",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 770,
+            "y": 0
+          },
+          "nodeIndex": "NIVEL_EDUCATIVO",
+          "nodeLineageTag": "051c2186-d36d-403e-b555-2c4a6b38fe1f",
+          "size": {
+            "height": 154,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 1392,
+            "y": 366
+          },
+          "nodeIndex": "PROVINCIA",
+          "nodeLineageTag": "131c3a77-5264-4d50-976f-5037771d25f5",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 522,
+            "y": 226
+          },
+          "nodeIndex": "BIENES_PATRIMONIALES",
+          "nodeLineageTag": "fddcf140-1e8b-4e5e-8911-23fdce838273",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 692,
+            "y": 600
+          },
+          "nodeIndex": "CENTRO_EDUCATIVO",
+          "nodeLineageTag": "6482782d-b260-46fc-a543-11d9623a7d09",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 922,
+            "y": 224
+          },
+          "nodeIndex": "CONTABILIDAD_BIEN",
+          "nodeLineageTag": "b1800486-f0cf-4e7d-bc24-b4ba97e9c50a",
+          "size": {
+            "height": 276,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 1401.9999542236328,
+            "y": 574
+          },
+          "nodeIndex": "DEPARTAMENTO",
+          "nodeLineageTag": "df9d331c-f7d6-483a-bdad-aa3e55f70006",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 8,
+            "y": 518
+          },
+          "nodeIndex": "ESTADO",
+          "nodeLineageTag": "f5775bc9-2b78-4bd8-8455-ec1e2a929a69",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 1185.3333740234375,
+            "y": 0
+          },
+          "nodeIndex": "FORMATO_EDUCATIVO",
+          "nodeLineageTag": "ad6f9535-1c96-44b8-b71f-3865d3ca434d",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 1103.9998779296875,
+            "y": 602
+          },
+          "nodeIndex": "UBICACION_GEOGRAFICA",
+          "nodeLineageTag": "33688ecc-c6cb-4453-85b6-c7ea35854b71",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 1690,
+            "y": 5
+          },
+          "nodeIndex": "MEDIDAS",
+          "nodeLineageTag": "edaa0fe4-8507-4b38-8c79-1e6261170076",
+          "size": {
+            "height": 548,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas las tablas",
+      "zoomValue": 54,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas las tablas",
+  "defaultDiagram": "Todas las tablas"
+}

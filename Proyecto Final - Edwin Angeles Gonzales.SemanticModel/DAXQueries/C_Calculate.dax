@@ -1,0 +1,9 @@
+DEFINE
+	MEASURE MEDIDAS[Valor_total_portatil] =CALCULATE([Valor_total_de_inventario],BIENES_PATRIMONIALES[CATEGORIA]="EQUIPO")
+	MEASURE MEDIDAS[Valor_total_distrito] =CALCULATE([Valor_total_de_inventario],DISTRITO[DISTRITO]="MOYOBAMBA")
+
+EVALUATE
+	SUMMARIZECOLUMNS(
+		"RESULTADO POR PRODUCTO",[Valor_total_portatil],
+		"RESULTADO POR DISTRITO",[Valor_total_distrito]
+	)

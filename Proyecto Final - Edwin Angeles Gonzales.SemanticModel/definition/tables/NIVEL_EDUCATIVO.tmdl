@@ -1,0 +1,53 @@
+table NIVEL_EDUCATIVO
+	lineageTag: 051c2186-d36d-403e-b555-2c4a6b38fe1f
+
+	column NLV_MODULAR
+		dataType: string
+		lineageTag: 10a36ee1-bf7b-4002-a3af-ce59baa4be02
+		summarizeBy: none
+		sourceColumn: NLV_MODULAR
+
+		annotation SummarizationSetBy = Automatic
+
+	column D_NLV_MODULAR
+		dataType: string
+		lineageTag: 33002aac-9a6c-447a-b094-bbd4e3e4d657
+		summarizeBy: none
+		sourceColumn: D_NLV_MODULAR
+
+		annotation SummarizationSetBy = Automatic
+
+	column COD_FORMA
+		dataType: string
+		lineageTag: d3dd28f6-2e58-4bd4-814a-35a3fb8d0354
+		summarizeBy: none
+		sourceColumn: COD_FORMA
+
+		annotation SummarizationSetBy = Automatic
+
+	partition NIVEL_EDUCATIVO = m
+		mode: import
+		source = ```
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"COD_PATRIMONIAL", Int64.Type}, {"DESCRIPCION", type text}, {"FECHA_COMPRA", Int64.Type}, {"NOMBRE", type text}, {"CTA_PRINCIPAL", Int64.Type}, {"SUB_CTA", Int64.Type}, {"TIPO_MOV", type text}, {"TIPO_TRAN", Int64.Type}, {"NOMBRE_DEP", type text}, {"NOMBRE_SEDE", type text}, {"COD_MODULAR", Int64.Type}, {"TIPO_DOC_REFER", Int64.Type}, {"FECHA_MOV", Int64.Type}, {"FECHA_ALTA", Int64.Type}, {"HVALOR_INICIAL", type number}, {"HDEPR_INICIAL", type number}, {"HDEPR_EJERCICIO", type number}, {"VALOR_NETO", type number}, {"ESTADO_CONSER", type text}, {"SEC_EJEC", Int64.Type}, {"COD_LOCAL", Int64.Type}, {"NLV_MODULAR", type text}, {"D_NLV_MODULAR", type text}, {"D_FORMA", type text}, {"TIPO_SEXO", Int64.Type}, {"D_TIPO_SEXO", type text}, {"GESTION", Int64.Type}, {"D_GESTION", type text}, {"GES_DEP", type text}, {"D_GES_DEP", type text}, {"DIR_CENTRO", type text}, {"AREA_CENSO", Int64.Type}, {"D_AREACENSO", type text}, {"UBIGEO", Int64.Type}, {"DEPARTAMENTO", type text}, {"COD_PROV", Int64.Type}, {"PROVINCIA", type text}, {"COD_DISTRITO", Int64.Type}, {"DISTRITO", type text}, {"COD_ESTADO", Int64.Type}, {"D_ESTADO", type text}, {"LATITUD", type number}, {"LONGITUD", type number}, {"FECHA_CORTE", Int64.Type}}),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Tipo cambiado",{"NLV_MODULAR", "D_NLV_MODULAR"}),
+				    #"Columna condicional agregada" = Table.AddColumn(#"Otras columnas quitadas", "COD_FORMA", 
+				each if Text.Contains([D_NLV_MODULAR], "Básica Alternativa-Avanzado") then 3 
+				else if Text.Contains([D_NLV_MODULAR], "Básica Alternativa-Inicial e Intermedio") then 3 
+				else if Text.Contains([D_NLV_MODULAR], "Básica Especial") then 2 
+				else if Text.Contains([D_NLV_MODULAR], "Inicial - Programa no escolarizado") then 2 
+				else 1),
+				    #"Columnas reordenadas" = Table.ReorderColumns(#"Columna condicional agregada",{"NLV_MODULAR", "COD_FORMA", "D_NLV_MODULAR"}),
+				    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Columnas reordenadas",{{"COD_FORMA", type text}}),
+				    #"Duplicados quitados" = Table.Distinct(#"Tipo cambiado1", {"NLV_MODULAR"}),
+				    #"Filas ordenadas" = Table.Sort(#"Duplicados quitados",{{"NLV_MODULAR", Order.Ascending}})
+				in
+				    #"Filas ordenadas"
+				```
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

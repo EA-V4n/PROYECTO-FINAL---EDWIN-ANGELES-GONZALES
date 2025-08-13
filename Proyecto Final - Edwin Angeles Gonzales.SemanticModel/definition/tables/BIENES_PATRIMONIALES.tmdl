@@ -1,0 +1,195 @@
+table BIENES_PATRIMONIALES
+	lineageTag: fddcf140-1e8b-4e5e-8911-23fdce838273
+
+	column COD_PATRIMONIAL
+		dataType: string
+		lineageTag: 9257b3e0-eab5-4594-8fff-09b0f47f8f77
+		summarizeBy: none
+		sourceColumn: COD_PATRIMONIAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column COD_ESTADO
+		dataType: string
+		lineageTag: 05afc035-0390-4501-b784-2cc2aa3ef345
+		summarizeBy: none
+		sourceColumn: COD_ESTADO
+
+		annotation SummarizationSetBy = Automatic
+
+	column CTA_PRINCIPAL
+		dataType: string
+		lineageTag: 888030db-c8a2-448a-9cbe-fbf033b4032f
+		summarizeBy: none
+		sourceColumn: CTA_PRINCIPAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column COD_LOCAL
+		dataType: string
+		lineageTag: c4ef6887-2604-4567-88d0-6fc547c88c85
+		summarizeBy: none
+		sourceColumn: COD_LOCAL
+
+		annotation SummarizationSetBy = Automatic
+
+	column NLV_MODULAR
+		dataType: string
+		lineageTag: aec7a3c1-0825-4ff5-935a-7239481c93ca
+		summarizeBy: none
+		sourceColumn: NLV_MODULAR
+
+		annotation SummarizationSetBy = Automatic
+
+	column TIPO_SEXO
+		dataType: string
+		lineageTag: 8a643160-49ba-4f32-8c90-b42281a6d82c
+		summarizeBy: none
+		sourceColumn: TIPO_SEXO
+
+		annotation SummarizationSetBy = Automatic
+
+	column GESTION
+		dataType: string
+		lineageTag: bd3b0766-4e89-4f82-bdc9-0fb0b0fd5bdc
+		summarizeBy: none
+		sourceColumn: GESTION
+
+		annotation SummarizationSetBy = Automatic
+
+	column GES_DEP
+		dataType: string
+		lineageTag: f7cdba12-0731-4034-930e-ff9e6a79f806
+		summarizeBy: none
+		sourceColumn: GES_DEP
+
+		annotation SummarizationSetBy = Automatic
+
+	column AREA_CENSO
+		dataType: string
+		lineageTag: a7e222fd-02ed-410a-a967-9a7e0231af2d
+		summarizeBy: none
+		sourceColumn: AREA_CENSO
+
+		annotation SummarizationSetBy = Automatic
+
+	column CATEGORIA
+		dataType: string
+		lineageTag: 175113b3-648e-47b1-8b7a-141be0a92e8c
+		summarizeBy: none
+		sourceColumn: CATEGORIA
+
+		annotation SummarizationSetBy = Automatic
+
+	column PRODUCTO
+		dataType: string
+		lineageTag: 44649a74-0eb6-49a2-bcb7-6b25de3e9204
+		summarizeBy: none
+		sourceColumn: PRODUCTO
+
+		annotation SummarizationSetBy = Automatic
+
+	column HVALOR_INICIAL
+		dataType: decimal
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		lineageTag: c9fc199b-9b72-4162-b6ee-4a598d12c2ee
+		summarizeBy: sum
+		sourceColumn: HVALOR_INICIAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	column VALOR_NETO
+		dataType: decimal
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		lineageTag: 6faf33c0-b346-4c50-912b-021333cdefd6
+		summarizeBy: sum
+		sourceColumn: VALOR_NETO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	column ESTADO_CONSER
+		dataType: string
+		lineageTag: caba751f-21c2-4759-906f-fe314d1216dd
+		summarizeBy: none
+		sourceColumn: ESTADO_CONSER
+
+		annotation SummarizationSetBy = Automatic
+
+	column TIPO_DOC_REFER
+		dataType: string
+		lineageTag: 1e705a94-2b40-4c61-b1d3-ae94488b0fd8
+		summarizeBy: none
+		sourceColumn: TIPO_DOC_REFER
+
+		annotation SummarizationSetBy = Automatic
+
+	column FECHA_COMPRA
+		dataType: dateTime
+		formatString: d/mm/yyyy
+		lineageTag: ebd86637-5cbf-4dc6-b3eb-9de8ef95ab0a
+		summarizeBy: none
+		sourceColumn: FECHA_COMPRA
+
+		variation Variación
+			isDefault
+			relationship: 396d8237-2654-498d-9d18-5b7634238307
+			defaultHierarchy: LocalDateTable_9cacdd7c-9ea7-48f2-9dca-cb1e2a7ba07a.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column FECHA_ALTA
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: c6e1133c-b852-457a-96db-3c63d7c93d36
+		summarizeBy: none
+		sourceColumn: FECHA_ALTA
+
+		variation Variación
+			isDefault
+			relationship: 02375834-829a-4f95-a57f-cef18203a83a
+			defaultHierarchy: LocalDateTable_3744db35-abc4-43fe-935b-af248e554eb1.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition BIENES_PATRIMONIALES = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos1" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Encabezados promovidos1",{"COD_PATRIMONIAL", "COD_ESTADO", "CTA_PRINCIPAL", "COD_LOCAL", "NLV_MODULAR", "TIPO_SEXO", "GESTION", "GES_DEP", "AREA_CENSO", "NOMBRE", "DESCRIPCION", "FECHA_COMPRA", "FECHA_ALTA", "HVALOR_INICIAL", "VALOR_NETO", "ESTADO_CONSER", "TIPO_DOC_REFER"}),
+				    #"Personalizada agregada" = Table.AddColumn(#"Otras columnas quitadas", "FECHA_ALTAA", each Date.FromText(Text.From([FECHA_ALTA]))),
+				    #"Personalizada agregada1" = Table.AddColumn(#"Personalizada agregada", "FECHA_COMPRAA", each Date.FromText(Text.From([FECHA_COMPRA]))),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Personalizada agregada1",{"FECHA_COMPRA", "FECHA_ALTA"}),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Columnas quitadas",{{"FECHA_ALTAA", "FECHA_ALTA"}, {"FECHA_COMPRAA", "FECHA_COMPRA"}}),
+				    #"Columnas reordenadas" = Table.ReorderColumns(#"Columnas con nombre cambiado",{"COD_PATRIMONIAL", "COD_ESTADO", "CTA_PRINCIPAL", "COD_LOCAL", "NLV_MODULAR", "TIPO_SEXO", "GESTION", "GES_DEP", "AREA_CENSO", "NOMBRE", "DESCRIPCION", "FECHA_COMPRA", "FECHA_ALTA", "HVALOR_INICIAL", "VALOR_NETO", "ESTADO_CONSER", "TIPO_DOC_REFER"}),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Columnas reordenadas",{{"FECHA_ALTA", type date}, {"FECHA_COMPRA", type date}, {"VALOR_NETO", Currency.Type}, {"HVALOR_INICIAL", Currency.Type}}),
+				    #"Duplicados quitados" = Table.Distinct(#"Tipo cambiado", {"COD_PATRIMONIAL"}),
+				    #"Columnas con nombre cambiado1" = Table.RenameColumns(#"Duplicados quitados",{{"NOMBRE", "CATEGORIA"}, {"DESCRIPCION", "PRODUCTO"}}),
+				    #"Filas filtradas" = Table.SelectRows(#"Columnas con nombre cambiado1", each true),
+				    #"Valor reemplazado" = Table.ReplaceValue(#"Filas filtradas","MOBILIARIO DE DE DEPORTES Y RECREACIÓN","MOBILIARIO DE DEPORTES Y RECREACIÓN",Replacer.ReplaceText,{"CATEGORIA"}),
+				    #"Valor reemplazado1" = Table.ReplaceValue(#"Valor reemplazado","Armario de metal","ARMARIO DE METAL",Replacer.ReplaceText,{"PRODUCTO"}),
+				    #"Valor reemplazado2" = Table.ReplaceValue(#"Valor reemplazado1","Armario de madera","ARMARIO DE MADERA",Replacer.ReplaceText,{"PRODUCTO"}),
+				    #"Valor reemplazado3" = Table.ReplaceValue(#"Valor reemplazado2","Cocina a gas","COCINA A GAS",Replacer.ReplaceText,{"PRODUCTO"}),
+				    #"Valor reemplazado4" = Table.ReplaceValue(#"Valor reemplazado3","Pizarra acrilica","PIZARRA ACRILICA",Replacer.ReplaceText,{"PRODUCTO"}),
+				    #"Valor reemplazado5" = Table.ReplaceValue(#"Valor reemplazado4","Estante de madera","ESTANTE DE MADERA",Replacer.ReplaceText,{"PRODUCTO"}),
+				    #"Valor reemplazado6" = Table.ReplaceValue(#"Valor reemplazado5","Estabilizador","ESTABILIZADOR",Replacer.ReplaceText,{"PRODUCTO"}),
+				    #"Valor reemplazado7" = Table.ReplaceValue(#"Valor reemplazado6","teclado - keyboard","TECLADO - KEYBOARD",Replacer.ReplaceText,{"PRODUCTO"}),
+				    #"Valor reemplazado8" = Table.ReplaceValue(#"Valor reemplazado7","Mesita de madera","MESITA DE MADERA",Replacer.ReplaceText,{"PRODUCTO"})
+				in
+				    #"Valor reemplazado8"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

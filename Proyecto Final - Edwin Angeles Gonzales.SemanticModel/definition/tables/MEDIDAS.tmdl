@@ -1,0 +1,242 @@
+table MEDIDAS
+	lineageTag: edaa0fe4-8507-4b38-8c79-1e6261170076
+
+	measure Valor_total_de_inventario = SUM(BIENES_PATRIMONIALES[VALOR_NETO])
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones de agregación
+		lineageTag: 439fcf20-1638-4fbb-bd61-4667360e93fb
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Cantidad_de_inventario = ```
+			COUNT(BIENES_PATRIMONIALES[COD_PATRIMONIAL])
+			    
+			```
+		formatString: 0
+		displayFolder: Funciones de agregación
+		lineageTag: 90cea891-735a-4d87-80c9-d41b5ce15067
+
+	measure Cantidad_productos_unicos = ```
+			DISTINCTCOUNT(BIENES_PATRIMONIALES[PRODUCTO]) 
+			```
+		formatString: 0
+		displayFolder: Funciones de agregación
+		lineageTag: 74076fdb-bc81-445a-ba84-a10b54535d3c
+
+	measure Promedio_valor_inventario = ```
+			AVERAGE(BIENES_PATRIMONIALES[VALOR_NETO])
+			    
+			```
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones de agregación
+		lineageTag: 79250c08-c62b-4227-aeb5-620b22b6fd1d
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Maximo_valor_inventario = ```
+			MAX(BIENES_PATRIMONIALES[VALOR_NETO])
+			    
+			```
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones de agregación
+		lineageTag: 8ef19656-87b1-4b22-a6c4-a248f100b1db
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Minimo_valor_inventario = ```
+			MIN(BIENES_PATRIMONIALES[VALOR_NETO])
+			    
+			```
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones de agregación
+		lineageTag: b1af64ac-6c3b-4bd6-86f9-55c2c3dda96f
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Cantidad_de_centros = ```
+			DISTINCTCOUNT(CENTRO_EDUCATIVO[NOMBRE_CENTRO])
+			
+			
+			```
+		formatString: 0
+		displayFolder: Funciones de agregación
+		lineageTag: 52f72ca1-192e-4fdc-9893-faea3a6521cd
+
+	measure Total_valor_modalidad_varones = ```
+			SUMX(FILTER(BIENES_PATRIMONIALES,RELATED('MODALIDAD_EDUCATIVA'[D_TIPO_SEXO])="Varones"),BIENES_PATRIMONIALES[VALOR_NETO])
+				
+			```
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones de iteración
+		lineageTag: 0e1be99e-04f8-406b-b0f5-fc599c83bb3b
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Total_valor_forma_noescolarizado = ```
+			SUMX(FILTER(BIENES_PATRIMONIALES,RELATED('FORMATO_EDUCATIVO'[D_FORMA])="No escolarizada"),BIENES_PATRIMONIALES[VALOR_NETO])
+				
+			
+			```
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones de iteración
+		lineageTag: 4b515915-a90b-443e-87de-9a45f5de4a28
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Valor_total_portatil = ```
+			CALCULATE([Valor_total_de_inventario],BIENES_PATRIMONIALES[CATEGORIA]="EQUIPO")
+				
+			```
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones CALCULATE
+		lineageTag: d69823a4-bafe-4d60-9a65-1629af9ae2d3
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Valor_total_distrito = ```
+			CALCULATE([Valor_total_de_inventario],DISTRITO[DISTRITO]="MOYOBAMBA")
+			
+			
+			```
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones CALCULATE
+		lineageTag: 0c7d1415-a584-4425-9a35-2adf7ce85820
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure '% Participación_de_distrito' =
+			
+			var _total= [Valor_total_de_inventario]
+			var _total_distrito = [Valor_total_distrito]
+			return
+			DIVIDE(_total_distrito,_total,0)
+		displayFolder: Funciones con variables
+		lineageTag: 8716f0d6-c6a6-48a1-99b3-cfd51641f031
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Valor_compra_mes_anterior = ```
+			CALCULATE([Valor_total_de_inventario],PREVIOUSMONTH(BIENES_PATRIMONIALES[FECHA_COMPRA].[Date]))
+			    
+			```
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones de Inteligencia de tiempo
+		lineageTag: 4ac00cc2-3ae4-41ca-8eac-2b645d377c69
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Valor_compra_año_anterior = ```
+			CALCULATE([Valor_total_de_inventario],SAMEPERIODLASTYEAR(BIENES_PATRIMONIALES[FECHA_COMPRA].[Date]))
+			    
+			```
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones de Inteligencia de tiempo
+		lineageTag: ba3a9075-7034-4680-8568-730464a9aee0
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Valor_compra_año_acumulado = ```
+			VAR _ValorCompAcumu = CALCULATE([Valor_total_de_inventario],DATESYTD(BIENES_PATRIMONIALES[FECHA_COMPRA].[Date]))
+			    RETURN
+			        IF( [Valor_total_de_inventario] = BLANK(),BLANK(),_ValorCompAcumu)
+			    
+			```
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones de Inteligencia de tiempo
+		lineageTag: a0bc7798-1249-496c-b62a-b05bcac131dc
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Valor_compra_trim_acumulado = ```
+			VAR _ValorTrimAcum = CALCULATE([Valor_total_de_inventario],DATESQTD(BIENES_PATRIMONIALES[FECHA_COMPRA].[Date]))
+			    RETURN
+			        IF([Valor_total_de_inventario] = BLANK(),BLANK(),_ValorTrimAcum)
+			
+			
+			```
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones de Inteligencia de tiempo
+		lineageTag: dd595689-8948-4832-bd1b-9ae822f8795d
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Dif_Valor_total_inventario-SOFTWARE =
+			
+			VAR __BASELINE_VALUE =
+				CALCULATE(
+					[Valor_total_de_inventario],
+					'BIENES_PATRIMONIALES'[CATEGORIA] IN { "SOFTWARE" }
+				)
+			VAR __MEASURE_VALUE = [Valor_total_de_inventario]
+			RETURN
+				IF(NOT ISBLANK(__MEASURE_VALUE), __MEASURE_VALUE - __BASELINE_VALUE)
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Medidas rápidas
+		lineageTag: e86f7ae0-44d4-47eb-b684-cbb1179725d9
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "DifferenceFrom"
+				}
+
+		changedProperty = FormatString
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Dif_%_Valor_total_inventario-SOFTWARE =
+			
+			VAR __BASELINE_VALUE =
+				CALCULATE(
+					[Valor_total_de_inventario],
+					'BIENES_PATRIMONIALES'[CATEGORIA] IN { "SOFTWARE" }
+				)
+			VAR __MEASURE_VALUE = [Valor_total_de_inventario]
+			RETURN
+				IF(
+					NOT ISBLANK(__MEASURE_VALUE),
+					DIVIDE(__MEASURE_VALUE - __BASELINE_VALUE, __BASELINE_VALUE)
+				)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		displayFolder: Medidas rápidas
+		lineageTag: 39502787-1924-4c59-bd3d-a1bc6b25054d
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "PercentageDifferenceFrom"
+				}
+
+		changedProperty = FormatString
+
+	measure Depreciacion_acumulada = SUM(CONTABILIDAD_BIEN[HDEPR_INICIAL]) + SUM(CONTABILIDAD_BIEN[HDEPR_EJERCICIO])
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones de agregación
+		lineageTag: 9ca0326a-1bd1-4778-a34e-80b54485b3ec
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Valor_inicial_total = SUM(BIENES_PATRIMONIALES[HVALOR_INICIAL])
+		formatString: "S/"\ #,0.###############;-"S/"\ #,0.###############;"S/"\ #,0.###############
+		displayFolder: Funciones de agregación
+		lineageTag: d91d3607-7f27-4db8-b7f0-7aff3b3bf95a
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-PE"}
+
+	measure Cantidad_distritos = DISTINCTCOUNT(DISTRITO[DISTRITO])
+		formatString: 0
+		displayFolder: Funciones de agregación
+		lineageTag: bcaeeeeb-b88f-4c4b-9340-7a5fd14eb708
+
+	partition MEDIDAS = m
+		mode: import
+		source =
+				let
+				    Origen = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Columna1 = _t]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(Origen,{{"Columna1", type text}}),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Tipo cambiado",{"Columna1"})
+				in
+				    #"Columnas quitadas"
+
+	annotation PBI_ResultType = Table
+

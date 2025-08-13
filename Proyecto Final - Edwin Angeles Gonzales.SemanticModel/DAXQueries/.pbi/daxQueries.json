@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "tabOrder": [
+    "C_Agregación",
+    "C_Iteración",
+    "C_Calculate",
+    "C.Inteligencia_tiempo"
+  ],
+  "defaultTab": "C_Calculate"
+}

@@ -1,0 +1,37 @@
+table PROVINCIA
+	lineageTag: 131c3a77-5264-4d50-976f-5037771d25f5
+
+	column COD_PROV
+		dataType: string
+		lineageTag: 918c1b50-e9fb-4202-a2c4-3f591840c045
+		summarizeBy: none
+		sourceColumn: COD_PROV
+
+		annotation SummarizationSetBy = Automatic
+
+	column PROVINCIA
+		dataType: string
+		lineageTag: 081190b1-e848-4137-9c03-74dced283276
+		summarizeBy: none
+		sourceColumn: PROVINCIA
+
+		annotation SummarizationSetBy = Automatic
+
+	partition PROVINCIA = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"COD_PATRIMONIAL", Int64.Type}, {"DESCRIPCION", type text}, {"FECHA_COMPRA", Int64.Type}, {"NOMBRE", type text}, {"CTA_PRINCIPAL", Int64.Type}, {"SUB_CTA", Int64.Type}, {"TIPO_MOV", type text}, {"TIPO_TRAN", Int64.Type}, {"NOMBRE_DEP", type text}, {"NOMBRE_SEDE", type text}, {"COD_MODULAR", Int64.Type}, {"TIPO_DOC_REFER", Int64.Type}, {"FECHA_MOV", Int64.Type}, {"FECHA_ALTA", Int64.Type}, {"HVALOR_INICIAL", type number}, {"HDEPR_INICIAL", type number}, {"HDEPR_EJERCICIO", type number}, {"VALOR_NETO", type number}, {"ESTADO_CONSER", type text}, {"SEC_EJEC", Int64.Type}, {"COD_LOCAL", Int64.Type}, {"NLV_MODULAR", type text}, {"D_NLV_MODULAR", type text}, {"D_FORMA", type text}, {"TIPO_SEXO", Int64.Type}, {"D_TIPO_SEXO", type text}, {"GESTION", Int64.Type}, {"D_GESTION", type text}, {"GES_DEP", type text}, {"D_GES_DEP", type text}, {"DIR_CENTRO", type text}, {"AREA_CENSO", Int64.Type}, {"D_AREACENSO", type text}, {"UBIGEO", Int64.Type}, {"DEPARTAMENTO", type text}, {"COD_PROV", Int64.Type}, {"PROVINCIA", type text}, {"COD_DISTRITO", Int64.Type}, {"DISTRITO", type text}, {"COD_ESTADO", Int64.Type}, {"D_ESTADO", type text}, {"LATITUD", type number}, {"LONGITUD", type number}, {"FECHA_CORTE", Int64.Type}}),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Tipo cambiado",{"COD_PROV", "PROVINCIA"}),
+				    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Otras columnas quitadas",{{"COD_PROV", type text}}),
+				    #"Duplicados quitados" = Table.Distinct(#"Tipo cambiado1", {"COD_PROV"}),
+				    #"Filas ordenadas" = Table.Sort(#"Duplicados quitados",{{"COD_PROV", Order.Ascending}})
+				in
+				    #"Filas ordenadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

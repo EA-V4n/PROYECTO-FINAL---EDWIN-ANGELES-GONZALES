@@ -1,0 +1,39 @@
+table FORMATO_EDUCATIVO
+	lineageTag: ad6f9535-1c96-44b8-b71f-3865d3ca434d
+
+	column COD_FORMA
+		dataType: string
+		lineageTag: 0f95a33e-8cc7-4702-b9a6-05df7d501f22
+		summarizeBy: none
+		sourceColumn: COD_FORMA
+
+		annotation SummarizationSetBy = Automatic
+
+	column D_FORMA
+		dataType: string
+		lineageTag: b5f59a34-0923-4d8b-8cf1-415f93f28f32
+		summarizeBy: none
+		sourceColumn: D_FORMA
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FORMATO_EDUCATIVO = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos1" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Encabezados promovidos1",{"D_FORMA"}),
+				    #"Columna condicional agregada" = Table.AddColumn(#"Otras columnas quitadas", "Personalizado", each if Text.Contains([D_FORMA], "Escolarizada") then 1 else if Text.Contains([D_FORMA], "No escolarizada") then 2 else if Text.Contains([D_FORMA], "No aplica") then 3 else null),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Columna condicional agregada",{{"Personalizado", type text}}),
+				    #"Columnas reordenadas" = Table.ReorderColumns(#"Tipo cambiado",{"Personalizado", "D_FORMA"}),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Columnas reordenadas",{{"Personalizado", "COD_FORMA"}}),
+				    #"Duplicados quitados" = Table.Distinct(#"Columnas con nombre cambiado", {"COD_FORMA"}),
+				    #"Filas ordenadas" = Table.Sort(#"Duplicados quitados",{{"COD_FORMA", Order.Ascending}})
+				in
+				    #"Filas ordenadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

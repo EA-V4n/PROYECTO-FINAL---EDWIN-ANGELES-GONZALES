@@ -1,0 +1,11 @@
+DEFINE
+    MEASURE MEDIDAS[Valor_compra_mes_anterior] = CALCULATE([Valor_total_de_inventario],PREVIOUSMONTH(BIENES_PATRIMONIALES[FECHA_COMPRA].[Date]))
+    MEASURE MEDIDAS[Valor_compra_año_anterior] = CALCULATE([Valor_total_de_inventario],SAMEPERIODLASTYEAR(BIENES_PATRIMONIALES[FECHA_COMPRA].[Date]))
+    MEASURE MEDIDAS[Valor_compra_año_acumulado] = VAR _ValorCompAcumu = CALCULATE([Valor_total_de_inventario],DATESYTD(BIENES_PATRIMONIALES[FECHA_COMPRA].[Date]))
+    RETURN
+        IF( [Valor_total_de_inventario] = BLANK(),BLANK(),_ValorCompAcumu)
+        
+    MEASURE MEDIDAS[Valor_compra_trim_acumulado] = VAR _ValorTrimAcum = CALCULATE([Valor_total_de_inventario],DATESQTD(BIENES_PATRIMONIALES[FECHA_COMPRA].[Date]))
+    RETURN
+        IF([Valor_total_de_inventario] = BLANK(),BLANK(),_ValorTrimAcum)
+

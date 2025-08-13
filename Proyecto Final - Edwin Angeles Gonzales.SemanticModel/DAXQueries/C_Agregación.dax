@@ -1,0 +1,15 @@
+DEFINE
+    MEASURE MEDIDAS[Cantidad_de_inventario] = COUNT(BIENES_PATRIMONIALES[COD_PATRIMONIAL])
+    MEASURE MEDIDAS[Promedio_valor_inventario] = AVERAGE(BIENES_PATRIMONIALES[VALOR_NETO])
+    MEASURE MEDIDAS[Maximo_valor_inventario] = MAX(BIENES_PATRIMONIALES[VALOR_NETO])
+    MEASURE MEDIDAS[Minimo_valor_inventario] = MIN(BIENES_PATRIMONIALES[VALOR_NETO])
+    MEASURE MEDIDAS[Cantidad_de_centros] = DISTINCTCOUNT(CENTRO_EDUCATIVO[NOMBRE_CENTRO])
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "CANTIDAD TOTAL", [Cantidad_de_inventario],
+        "PROMEDIO_TOTAL", [Promedio_valor_inventario],
+        "MAXIMO_VALOR TOTAL", [Maximo_valor_inventario],
+        "MINIMO_VALOR TOTAL", [Minimo_valor_inventario],
+        "CANTIDAD_CENTROS", [Cantidad_de_centros]
+    )

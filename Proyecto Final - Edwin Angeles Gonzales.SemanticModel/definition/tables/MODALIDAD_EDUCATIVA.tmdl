@@ -1,0 +1,36 @@
+table MODALIDAD_EDUCATIVA
+	lineageTag: 65e5520a-6e41-46eb-875f-bf48b4142ca6
+
+	column TIPO_SEXO
+		dataType: string
+		lineageTag: f7248df5-31f2-41cb-83c4-8643ae203d35
+		summarizeBy: none
+		sourceColumn: TIPO_SEXO
+
+		annotation SummarizationSetBy = Automatic
+
+	column D_TIPO_SEXO
+		dataType: string
+		lineageTag: cd22e17e-5713-4e35-b2f9-efe755e0390e
+		summarizeBy: none
+		sourceColumn: D_TIPO_SEXO
+
+		annotation SummarizationSetBy = Automatic
+
+	partition MODALIDAD_EDUCATIVA = m
+		mode: import
+		source =
+				let
+				    Origen = Csv.Document(File.Contents("C:\Users\IVANOV\Downloads\Proyecto_NW\inventario.csv"),[Delimiter=";", Columns=44, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Encabezados promovidos1" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Filas filtradas" = Table.SelectRows(#"Encabezados promovidos1", each true),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Filas filtradas",{"TIPO_SEXO", "D_TIPO_SEXO"}),
+				    #"Duplicados quitados" = Table.Distinct(#"Otras columnas quitadas", {"TIPO_SEXO"}),
+				    #"Filas ordenadas" = Table.Sort(#"Duplicados quitados",{{"TIPO_SEXO", Order.Ascending}})
+				in
+				    #"Filas ordenadas"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
